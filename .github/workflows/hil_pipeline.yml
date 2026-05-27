@@ -23,6 +23,12 @@ jobs:
           source .venv_runner/bin/activate
           pip install -r requirements.txt
 
+      - name: 🧪 Run Software Simulation (Cocotb)
+        run: |
+          source .venv_runner/bin/activate
+          echo "Running pure software verification before synthesis..."
+          make sim
+
       - name: Synthesize Verilog (Quartus)
         run: |
           source .venv_runner/bin/activate
