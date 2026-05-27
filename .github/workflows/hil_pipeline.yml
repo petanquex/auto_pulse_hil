@@ -26,9 +26,16 @@ jobs:
           echo "Flashing bitstream to Cyclone IV..."
           ./scripts/flash_fpga.sh
 
+      - name: Build Python Environment
+        run: |
+          echo "Creating isolated runner environment..."
+          python3 -m venv .venv_runner
+          source .venv_runner/bin/activate
+          pip install -r requirements.txt
+
       - name: Run HIL Python Testbench
         run: |
           echo "Asserting physical PWM generation via ESP32..."
-          # Activate the local virtual environment and run the script
-          source .venv_hil/bin/activate
+          # Activate the RUNNER'S virtual environment, not your local one
+          source .venv_runner/bin/activate
           ./scripts/run_hil_test.py
