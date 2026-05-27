@@ -16,6 +16,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Build Python Environment
+        run: |
+          echo "Creating isolated runner environment..."
+          python3 -m venv .venv_runner
+          source .venv_runner/bin/activate
+          pip install -r requirements.txt
+
       - name: Synthesize Verilog (Quartus)
         run: |
           echo "Starting Quartus Compilation..."
@@ -25,13 +32,6 @@ jobs:
         run: |
           echo "Flashing bitstream to Cyclone IV..."
           ./scripts/flash_fpga.sh
-
-      - name: Build Python Environment
-        run: |
-          echo "Creating isolated runner environment..."
-          python3 -m venv .venv_runner
-          source .venv_runner/bin/activate
-          pip install -r requirements.txt
 
       - name: Run HIL Python Testbench
         run: |
