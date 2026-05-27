@@ -25,17 +25,18 @@ jobs:
 
       - name: Synthesize Verilog (Quartus)
         run: |
+          source .venv_runner/bin/activate
           echo "Starting Quartus Compilation..."
           make synth
 
       - name: Flash Physical FPGA
         run: |
+          source .venv_runner/bin/activate
           echo "Flashing bitstream to Cyclone IV..."
           ./scripts/flash_fpga.sh
 
       - name: Run HIL Python Testbench
         run: |
-          echo "Asserting physical PWM generation via ESP32..."
-          # Activate the RUNNER'S virtual environment, not your local one
           source .venv_runner/bin/activate
+          echo "Asserting physical PWM generation via ESP32..."
           ./scripts/run_hil_test.py
