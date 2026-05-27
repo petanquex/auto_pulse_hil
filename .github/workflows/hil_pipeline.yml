@@ -1,0 +1,34 @@
+name: FPGA Hardware-in-the-Loop Tests
+
+# Trigger the test every time you push code to the main branch
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  hardware-test:
+    # CRITICAL: This tells GitHub to run the job on YOUR laptop, not their cloud servers
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Synthesize Verilog (Quartus)
+        run: |
+          echo "Starting Quartus Compilation..."
+          make synth
+
+      - name: Flash Physical FPGA
+        run: |
+          echo "Flashing bitstream to Cyclone IV..."
+          ./scripts/flash_fpga.sh
+
+      - name: Run HIL Python Testbench
+        run: |
+          echo "Asserting physical PWM generation via ESP32..."
+          # Activate the local virtual environment and run the script
+          source .venv_hil/bin/activate
+          ./scripts/run_hil_test.py

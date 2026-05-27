@@ -1,0 +1,28 @@
+# Core Project Settings
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE6E22C8
+set_global_assignment -name TOP_LEVEL_ENTITY top_motor_controller
+
+# Route compilation files to build/
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY build/output_files
+
+# Include HDL Source Files
+set_global_assignment -name VERILOG_FILE hdl/pwm_generator.v
+set_global_assignment -name VERILOG_FILE hdl/spi_slave.v
+set_global_assignment -name VERILOG_FILE hdl/top_motor_controller.v
+
+# System Clock and Reset
+set_location_assignment PIN_24 -to clk
+set_location_assignment PIN_88 -to rst_n
+
+# SPI Interface (To ESP32/STM32)
+set_location_assignment PIN_28 -to sclk
+set_location_assignment PIN_30 -to cs_n
+set_location_assignment PIN_31 -to mosi
+
+# PWM Outputs (To ESP32 for HIL measuring)
+set_location_assignment PIN_32 -to pwm_ch1
+set_location_assignment PIN_33 -to pwm_ch2
+
+# Voltage logic level
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to *
